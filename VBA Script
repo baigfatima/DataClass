@@ -1,0 +1,33 @@
+Sub StockData():
+    Dim WS As Worksheet
+    Dim Ticker As String
+    Dim TotalStockVolume As Double
+    Dim SummaryTableRow As Integer
+    
+    For Each WS In Worksheets
+    WS.Activate
+    
+    TotalStockVolume = 0
+    
+    SummaryTableRow = 2
+    
+    WS.Range("I1").Value = "Ticker"
+    WS.Range("J1").Value = "Total Stock Volume"
+    
+    LastRow = WS.Cells(Rows.Count, 1).End(xlUp).Row
+        
+        For i = 2 To LastRow
+        
+            If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+                Ticker = Cells(i, 1).Value
+                TotalStockVolume = TotalStockVolume + Cells(i, 7).Value
+                WS.Range("I" & SummaryTableRow).Value = Ticker
+                WS.Range("J" & SummaryTableRow).Value = TotalStockVolume
+                SummaryTableRow = SummaryTableRow + 1
+                TotalStockVolume = 0
+            Else
+            TotalStockVolume = TotalStockVolume + Cells(i, 7).Value
+            End If
+        Next i
+    Next WS
+End Sub
